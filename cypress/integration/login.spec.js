@@ -1,11 +1,8 @@
 it("successfully logs in", () => {
   cy.intercept("GET", "**/notes").as("getNotes");
 
-  cy.visit("/login");
-  cy.get("#email").type(Cypress.env("USER_EMAIL"));
-  cy.get("#password").type(Cypress.env("USER_PASSWORD"));
-  cy.contains("button", "Login").click();
-
-  cy.wait("@getNotes", { timeout: 15000 });
-  cy.contains("h1", "Your Notes").should("be.visible");
+  cy.login(Cypress.env("USER_EMAIL"), Cypress.env("USER_PASSWORD"), {
+    cacheSession: false,
+  });
+  cy.wait("@getNotes", { timeout: 30000 });
 });
